@@ -3,7 +3,7 @@ import User from "../models/user";
 
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    const currentUser = User.findOne({ _id: req.userId });
+    const currentUser = await User.findOne({ _id: req.userId });
     if (!currentUser)
       return res.status(404).json({ messaeg: "User not found!" });
 
