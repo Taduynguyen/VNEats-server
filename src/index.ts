@@ -27,7 +27,7 @@ app.use("/health", async (req: Request, res: Response) => {
 
 app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/restaurant", RestaurantRoute);
-app.use("/api/v2/restaurant", OtherRestaurantRoute)
+app.use("/api/v1/other/restaurant", OtherRestaurantRoute)
 
 app.listen(7000, () => {
   console.log("Server started on localhost:7000");
