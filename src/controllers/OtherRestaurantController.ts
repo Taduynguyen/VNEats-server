@@ -1,10 +1,35 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 
+const getOtherRestaurant = async (req: Request, res: Response) => {
+  try {
+    const restaurantId = req.params.restaurantId;
+
+    const restaurant = Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found"
+      })
+    }
+
+    res.json(restaurant);
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Something went wrong"
+    })
+  }
+}
+
 const searchOtherRestaurants = async (req: Request, res: Response) => {
+  const normalizeVietnamese = (str: string) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
   const createRegex = (input: string) => {
+    const normalizedInput = normalizeVietnamese(input);
     return new RegExp(
-      input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
+      normalizedInput.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
       "i"
     );
   };
@@ -78,5 +103,6 @@ const searchOtherRestaurants = async (req: Request, res: Response) => {
 };
 
 export default {
+  getOtherRestaurant,
   searchOtherRestaurants,
-}
+};

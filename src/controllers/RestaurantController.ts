@@ -29,7 +29,14 @@ const createRestaurant = async (req: Request, res: Response) => {
             res.status(409).json({
                 message: "User restaurant already exists"
             })
-        }
+        };
+
+        const removeAccents = (str: string) => {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+        if (req.body.city) {
+            req.body.city = removeAccents(req.body.city.toLowerCase());
+        };
 
         const imageUrl = await uploadImage(req.file as Express.Multer.File);
 
@@ -58,6 +65,13 @@ const updateRestaurant = async (req: Request, res: Response) => {
                 message: "Restaurant not found"
             });
         }
+
+        const removeAccents = (str: string) => {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+        if (req.body.city) {
+            req.body.city = removeAccents(req.body.city.toLowerCase());
+        };
 
         restaurant.restaurantName = req.body.restaurantName;
         restaurant.city = req.body.city;

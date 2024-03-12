@@ -4,7 +4,17 @@ import OtherRestaurantController from "../controllers/OtherRestaurantController"
 
 const router = express.Router();
 
-// /api/v2/restaurant/search/bienhoa
+// /api/v1/other/restaurant/
+router.get(
+  "/:restaurantId",
+  param("restaurantId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("RestaurantId parament must be a valid string"),
+    OtherRestaurantController.getOtherRestaurant
+);
+
 router.get(
   "/search/:city",
   param("city")
@@ -12,7 +22,7 @@ router.get(
     .trim()
     .notEmpty()
     .withMessage("City parament must be a valid string"),
-    OtherRestaurantController.searchOtherRestaurants
+  OtherRestaurantController.searchOtherRestaurants
 );
 
 export default router;
